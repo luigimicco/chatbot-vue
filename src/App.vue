@@ -4,7 +4,7 @@ export default {
 components: { ChatBot },
 data() {
     return {
-      modalChatBot: false,
+      chatBot: false,
       config: {
         assets: "../assets/chatbot/",
         avatar: "bot.png",
@@ -95,7 +95,7 @@ data() {
 </script>
 
 <template>
-  <ChatBot v-model="modalChatBot" :config="config" />
+  <ChatBot v-model="chatBot" :config="config" />
 </template>
 
 <style scoped>
