@@ -28,6 +28,12 @@ data() {
             {
               token: ['chiami', 'sei'],
               text : "Sono <b>Botty</b>, un chatbot creato per aiutarti a navigare in questo sito. Posso fornirti informazioni su progetti, competenze ed esperienze. Non esitare a chiedermi qualsiasi cosa sul portfolio!",
+              options: [
+                          {
+                            type: "img",
+                            img : "bot.png" ,
+                          },
+                        ]                
             },          
           'ans_progetti' :
             {

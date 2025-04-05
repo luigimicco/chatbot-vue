@@ -44,7 +44,7 @@
                       <template v-for="option in message.options">
                         <span v-if="option.type" class="">
                           <button @click="doAction(option)" v-if="option.type == 'text'">{{ option.text }}</button>
-                          <img @click="doAction(option)" v-if="option.type == 'img'" :src="option.img">
+                          <img @click="doAction(option)" v-if="option.type == 'img'" :src="getUrl(option.img)">
                         </span>
                       </template>
                       
@@ -158,12 +158,11 @@ export default {
         this.startNotificationTimer();
       } , 5000);
   },
-  beforeUnmount() {
+/*   beforeUnmount() {
     console.log()
-      this.saveStorage('chatbot', this.messages);
       this.clearBubbleTimer();
       this.stopSmoothScroll();
-  },
+  }, */
   updated() {
     if (this.history) this.saveStorage('chatbot', this.messages);
   },
@@ -772,6 +771,10 @@ export default {
 .action-bubble button:hover {
   background-color: #e1e4e8;
   transform: translateY(-2px);
+}
+
+.action-bubble img {
+  max-width: 100%;
 }
 
 </style>
