@@ -11,6 +11,7 @@ data() {
         beep: "beep.mp3",
         hystory: false,
         position: 'right',
+        sound: false,
         answers : {
           'welcome' :
             {

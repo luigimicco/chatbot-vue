@@ -5,22 +5,18 @@
         <div class="chatbot-label">Botty</div>
         <img :src="avatar" alt="Icona Chatbot">
       </div>
-      <div v-else class="chatbot-window " :class="((isMinimized) ? 'minimized ' : '') + position">
+      <div v-else class="chatbot-window " :class="position">
         <div  class="chatbot-header">
           <div  class="header-info">
-            <img v-if="!isMinimized" :src="avatar" alt="Assistente virtuale" class="header-avatar">
+            <img :src="avatar" alt="Assistente virtuale" class="header-avatar">
             <div  class="header-text">
               <h3 >Assistente</h3>
             </div>
           </div>
           <div  class="header-actions">
-            <button v-if="!isMinimized" class="action-btn" @click="toggleSound()" >
+            <button class="action-btn" @click="toggleSound()" >
               <span v-if="soundEnabled" class="action-icon">🔊</span>
               <span v-else class="action-icon">🔇</span>
-            </button>
-            <button  class="action-btn" @click="toggleMinimize()">
-              <span v-if="isMinimized" class="action-icon">▲</span>
-              <span v-else class="action-icon">▼</span>
             </button>
             <button  class="action-btn" @click='$emit("update:modelValue", false)'><span>✕</span></button>
           </div>
@@ -109,33 +105,19 @@ export default {
       beep: this.getUrl(this.config.beep) ?? null,
       history: this.config.hystory ?? false,
       position: this.config.position ?? 'right',
-      isChatOpen: false,
-      isMinimized: false,
+      answers: this.config.answers,
+      soundEnabled: this.config.sound ?? true,
+      messages: [],
+
       currentMessage: "",
       isTyping: false,
-      hasNewMessages: false,
-      bubblePulseAnimation: false,
-      soundEnabled: false,
-      userScrolling: false,
-      allowAutoScroll: true,
-      showChatbotIcon: true,
-      messages: [],
-      notificationSound: null,
       messageSound: null,
-      welcomeShown: false,
       smoothScrollInterval: null,
       smoothScrollSpeed: 1,
       smoothScrollDelay: 15,
-      lastBotResponse: "",
-      notificationPlayed: false,
-      answers: this.config.answers,
     }
   },
-  computed: {
-    currentBubbleMessage() {
-      return this.bubbleMessages[this.bubbleMessageIndex]
-    },
-  },
+  computed: { },
   created() {
     if (this.history)
       this.messages = this.getStorage('chatbot');
@@ -153,17 +135,8 @@ export default {
   },
   mounted() {
       this.messageSound = new Audio(this.beep);
-      setTimeout(() => {
-        this.bubblePulseAnimation = true;
-        this.playNotificationSound();
-        this.startNotificationTimer();
-      } , 5000);
   },
-/*   beforeUnmount() {
-    console.log()
-      this.clearBubbleTimer();
-      this.stopSmoothScroll();
-  }, */
+
   updated() {
     if (this.history) this.saveStorage('chatbot', this.messages);
   },
@@ -220,8 +193,6 @@ export default {
 
         if (newMessage) {
           this.isTyping = true;
-          this.allowAutoScroll = true;
-          this.userScrolling = false;
           this.$nextTick(() => {
             this.scrollToBottom(false)
           });
@@ -236,96 +207,21 @@ export default {
       }
     },
 
-    handleUserScroll() {
-      this.userScrolling = true;
-      this.allowAutoScroll = false;
-      this.stopSmoothScroll();
-      clearTimeout(this._scrollTimeout);
-      this._scrollTimeout = setTimeout(() => {
-        this.allowAutoScroll = true;
-        this.userScrolling = false;
-      } , 5000)
-    },
-    handleScrollEnd() {
-      if (this.userScrolling) {
-        clearTimeout(this._endScrollTimeout),
-          this._endScrollTimeout = setTimeout(() => {
-            const e = this.$refs.messagesContainer;
-            e && e.scrollHeight - e.scrollTop - e.clientHeight < 100 && (this.allowAutoScroll = true,
-              this.userScrolling = false)
-          }, 150);
-      }
-    },
-    toggleChat() {
-      this.isChatOpen = !this.isChatOpen;
-        this.isMinimized = false;
-        if (this.isChatOpen) {
-          this.hasNewMessages = false;
-          this.showBubble = false;
-          this.clearBubbleTimer();
-          this.showChatbotIcon = false;
-          this.$nextTick(() => {
-            this.scrollToBottom(false)
-          });
-        } else {
-          setTimeout(() => {
-            this.showChatbotIcon = true;
-            this.notificationPlayed = false;
-            setTimeout(() => {
-              this.startNotificationTimer();
-            } , 10000);
-          } , 300);
-
-        }
-    },
-    toggleMinimize() {
-      this.isMinimized = !this.isMinimized;
-    },
     toggleSound() {
       this.soundEnabled = !this.soundEnabled;
     },
-    playNotificationSound() {
-      if (this.soundEnabled && this.notificationSound && !this.isChatOpen) {
-        this.notificationSound.play().catch(e => console.error("Errore riproduzione audio:", e));
-        this.notificationPlayed = true;
-      }
-    },
+
     playMessageSound() {
       this.soundEnabled && this.messageSound && this.messageSound.play().catch(e => console.error("Errore riproduzione audio:", e))
     },
-    startNotificationTimer() {
-      this.clearBubbleTimer(),
-        !(this.bubbleShownCount >= this.maxBubbleShows || this.isChatOpen) && (this.bubbleTimer = setTimeout(() => {
-          this.isChatOpen || (this.bubblePulseAnimation = true,
-            this.playNotificationSound(),
-            this.bubbleShownCount++,
-            setTimeout(() => {
-              this.bubblePulseAnimation = false,
-                this.isChatOpen || this.startNotificationTimer()
-            }
-              , 5000))
-        }
-          , Math.random() * 45e3 + 45e3))
-    },
-    clearBubbleTimer() {
-      if (this.bubbleTimer) {
-        clearTimeout(this.bubbleTimer);
-        this.bubbleTimer = null;
-      }
-    },
+
     startSmoothScroll() {
-      if (!this.allowAutoScroll)
-        return;
       this.stopSmoothScroll();
       const e = this.$refs.messagesContainer;
       if (!e)
         return;
       const t = e.scrollHeight - e.clientHeight;
       this.smoothScrollInterval = setInterval(() => {
-        if (!this.allowAutoScroll) {
-          this.stopSmoothScroll();
-          return
-        }
         if (e.scrollTop >= t) {
           this.stopSmoothScroll();
           return
@@ -387,8 +283,6 @@ export default {
       }
 
       this.isTyping = true;
-      this.allowAutoScroll = true;
-      this.userScrolling = false;
 
       setTimeout(() => {
         this.isTyping = false;
@@ -410,7 +304,6 @@ export default {
         this.$nextTick(() => {
           this.scrollToBottom(false)
         });
-        this.hasNewMessages = true;
         } , Math.floor(Math.random()*1500))
 
     },
@@ -529,14 +422,6 @@ export default {
   left: calc((100% - 400px) / 2);
 }
 
-.chatbot-window.minimized {
-  height: 46px;
-  overflow: hidden;
-  border-radius: 12px;
-}
-.minimized .chatbot-header {
-  border-radius: 14px;
-}
 .chatbot-content {
   display: flex;
   flex-direction: column;
