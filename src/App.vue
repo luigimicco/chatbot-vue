@@ -10,6 +10,7 @@ data() {
         avatar: "bot.png",
         beep: "beep.mp3",
         hystory: false,
+        position: 'right',
         answers : {
           'welcome' :
             {

@@ -1,11 +1,11 @@
 <template>
   <teleport to="body">
     <div  class="chatbot-container">
-      <div v-if="!modelValue" class="chatbot-icon" @click='$emit("update:modelValue", true)'   >
+      <div v-if="!modelValue" class="chatbot-icon" :class="position" @click='$emit("update:modelValue", true)'   >
         <div class="chatbot-label">Botty</div>
         <img :src="avatar" alt="Icona Chatbot">
       </div>
-      <div v-else class="chatbot-window" :class="(isMinimized) ? 'minimized' : ''">
+      <div v-else class="chatbot-window " :class="((isMinimized) ? 'minimized ' : '') + position">
         <div  class="chatbot-header">
           <div  class="header-info">
             <img v-if="!isMinimized" :src="avatar" alt="Assistente virtuale" class="header-avatar">
@@ -108,6 +108,7 @@ export default {
       avatar: this.getUrl(this.config.avatar) ?? null,
       beep: this.getUrl(this.config.beep) ?? null,
       history: this.config.hystory ?? false,
+      position: this.config.position ?? 'right',
       isChatOpen: false,
       isMinimized: false,
       currentMessage: "",
@@ -440,7 +441,6 @@ export default {
 .chatbot-icon {
   position: fixed;
   bottom: 30px;
-  right: 20px;
   cursor: pointer;
   z-index: 1000;
   transition: transform 0.3s ease, opacity 0.5s ease;
@@ -449,6 +449,18 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+
+.chatbot-icon.right {
+  right: 20px;
+}
+.chatbot-icon.left {
+  left: 20px;
+}
+
+.chatbot-icon.center {
+  left: calc((100% - 50px) / 2);
+}
+
 .chatbot-label {
   background-color: #0084ff;
   color: #fff;
@@ -492,11 +504,11 @@ export default {
   position: fixed;
   bottom: 30px;
   right: 20px;
-  width: 350px;
-  height: 520px;
+  width: 400px;
+  height: 600px;
   max-height: 80vh;
   background-color: #fff;
-  border-radius: 20px;
+  border-radius: 14px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -504,13 +516,26 @@ export default {
   z-index: 999;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
+
+.chatbot-window.right {
+  right: 20px;
+}
+
+.chatbot-window.left {
+  left: 20px;
+}
+
+.chatbot-window.center {
+  left: calc((100% - 400px) / 2);
+}
+
 .chatbot-window.minimized {
   height: 46px;
   overflow: hidden;
   border-radius: 12px;
 }
 .minimized .chatbot-header {
-  border-radius: 12px;
+  border-radius: 14px;
 }
 .chatbot-content {
   display: flex;
@@ -522,12 +547,6 @@ export default {
   .chatbot-window {
     width: 90%;
     right: 5%;
-    bottom: 80px;
-    height: 65vh;
-  }
-  .chatbot-icon img {
-    width: 80px;
-    height: 80px;
   }
 }
 .chatbot-header {
