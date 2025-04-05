@@ -10,7 +10,7 @@
           <div  class="header-info">
             <img :src="avatar" alt="Assistente virtuale" class="header-avatar">
             <div  class="header-text">
-              <h3 >Assistente</h3>
+              <h3 >Botty</h3>
             </div>
           </div>
           <div  class="header-actions">
@@ -28,7 +28,7 @@
                   <div v-if="message.sender == 'bot'">
                     <div class="message-content">
                       <div class="bot-avatar"><img  :src="avatar"
-                        alt="Assistente virtuale">
+                        alt="Botty">
                       </div>
                       <div v-if="message.text" class="message-bubble">
                         <p v-html="message.text"></p>
@@ -75,7 +75,7 @@
           </div>
           <div  class="chatbot-input">
             <input v-model="currentMessage" @keyup.enter="userMessage"
-              placeholder="Chiedi qualcosa sul portfolio..." type="text" aria-label="Messaggio per il chatbot">
+              placeholder="digitare qui ..." type="text" aria-label="Messaggio per il chatbot">
               <button @click="userMessage" class="send-btn" aria-label="Invia messaggio"><span >➤</span></button>
           </div>
         </div>
@@ -117,6 +117,19 @@ export default {
       smoothScrollDelay: 15,
     }
   },
+  watch: {
+      // whenever showFilter changes, this function will run
+      modelValue(newValue, oldValue) {
+          if (newValue != oldValue && newValue === true ) {
+            this.$nextTick(() => {
+              //this.startSmoothScroll();
+              this.scrollToBottom(false)
+            });
+
+          }
+      },
+  },
+
   computed: { },
   created() {
     if (this.history)
@@ -194,7 +207,7 @@ export default {
         if (newMessage) {
           this.isTyping = true;
           this.$nextTick(() => {
-            this.scrollToBottom(false)
+            this.scrollToBottom(false);
           });
           setTimeout(() => {
             this.isTyping = false;
@@ -252,6 +265,11 @@ export default {
         time: this.getCurrentTime()
       });
       this.currentMessage = "";
+      this.$nextTick(() => {
+        this.startSmoothScroll();
+        //          this.scrollToBottom(false)
+      });
+      
       this.handleUserResponse(e.toLowerCase());
 
     },
@@ -302,7 +320,8 @@ export default {
         this.messages.push(newMessage);
         this.playMessageSound();
         this.$nextTick(() => {
-          this.scrollToBottom(false)
+          this.startSmoothScroll();
+//          this.scrollToBottom(false)
         });
         } , Math.floor(Math.random()*1500))
 

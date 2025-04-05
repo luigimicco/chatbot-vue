@@ -19,11 +19,11 @@ data() {
             },
           'default' :
             {
-              text : "Mi dispiace, non ho informazioni specifiche su questo argomento. Prova a chiedermi dei progetti, competenze, esperienze o contatti.",
+              text : "Mi dispiace, non sono in grado di capire la tua domanda. Prova a chiedermi qualcos'altro.",
             }, 
           'no' :
             {
-              token: ['no'],
+              token: ['fine'],
               text : ["Va bene! Se ti posso aiutare in altro, fammelo sapere!", "Nessun problema! Sono qui per aiutarti con qualsiasi altra informazione!", "Come preferisci!", "Capito! Se cambi idea o vuoi vedere altro, sono qui!"],
             }, 
           'bot' :
