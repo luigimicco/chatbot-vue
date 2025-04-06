@@ -6,12 +6,13 @@ export default {
       return {
         chatBot: false,
         config: {
+          name: "Botty",
           assets: "../assets/chatbot/",
           avatar: "bot.png",
           beep: "beep.mp3",
-          hystory: false,
-          position: 'right',
-          sound: false,
+          hystory: false,    // true|false 
+          position: 'right', // "left|center|right"
+          sound: false,      // true|false  
           answers : {
             'welcome' :
               {

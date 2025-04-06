@@ -2,7 +2,7 @@
   <teleport to="body">
     <div  class="chatbot-container">
       <div v-if="!modelValue" class="chatbot-icon" :class="position" @click='$emit("update:modelValue", true)'   >
-        <div class="chatbot-label">Botty</div>
+        <div class="chatbot-label">{{ name }}</div>
         <img :src="avatar" alt="Icona Chatbot">
       </div>
       <div v-else class="chatbot-window " :class="position">
@@ -10,7 +10,7 @@
           <div  class="header-info">
             <img :src="avatar" alt="Assistente virtuale" class="header-avatar">
             <div  class="header-text">
-              <h3 >Botty</h3>
+              <h3 >{{ name }}</h3>
             </div>
           </div>
           <div  class="header-actions">
@@ -28,7 +28,7 @@
                 <div v-if="message.sender == 'bot'">
                   <div class="message-content">
                     <div class="bot-avatar"><img  :src="avatar"
-                      alt="Botty">
+                      :alt="name">
                     </div>
                     <div class="message-answers" >
                       <div v-if="message.text" v-for="text in message.text.split('|')" class="message-bubble">
@@ -97,6 +97,7 @@ export default {
   },
   data() {
     return {
+      name: this.config.name ?? "Botty",
       avatar: this.getUrl(this.config.avatar) ?? null,
       beep: this.getUrl(this.config.beep) ?? null,
       history: this.config.hystory ?? false,
@@ -114,7 +115,7 @@ export default {
     }
   },
   watch: {
-      // whenever showFilter changes, this function will run
+      // whenever modelValue changes, this function will run
       modelValue(newValue, oldValue) {
           if (newValue != oldValue && newValue === true ) {
             this.$nextTick(() => {
