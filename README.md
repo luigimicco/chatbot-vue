@@ -188,3 +188,9 @@ This is a sample configuration:
         }
       }
 ```
+
+## Play
+```
+npm run dev
+```
+build the library and start the playground
