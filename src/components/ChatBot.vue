@@ -25,38 +25,34 @@
           <div class="chatbot-messages" ref="messagesContainer">
             <div v-for="(message, index) in messages" >
               <div class="message" :class="message.sender">
-                  <div v-if="message.sender == 'bot'">
-                    <div class="message-content">
-                      <div class="bot-avatar"><img  :src="avatar"
-                        alt="Botty">
-                      </div>
-                      <div v-if="message.text" class="message-bubble">
-                        <p v-html="message.text"></p>
+                <div v-if="message.sender == 'bot'">
+                  <div class="message-content">
+                    <div class="bot-avatar"><img  :src="avatar"
+                      alt="Botty">
+                    </div>
+                    <div class="message-answers" >
+                      <div v-if="message.text" v-for="text in message.text.split('|')" class="message-bubble">
+                        <p v-html="text"></p>
                         <span  class="message-time">{{ message.time }}</span>
                       </div>
-                    </div>
 
-                    <div v-if="message.options" class="action-bubble">
-                      <template v-for="option in message.options">
-                        <span v-if="option.type" class="">
-                          <button @click="doAction(option)" v-if="option.type == 'text'">{{ option.text }}</button>
-                          <img @click="doAction(option)" v-if="option.type == 'img'" :src="getUrl(option.img)">
-                        </span>
-                      </template>
-                      
+                      <div v-if="message.options" class="message-bubble">
+                        <template v-for="option in message.options">
+                          <span v-if="option.type" class="">
+                            <button @click="doAction(option)" v-if="option.type == 'text'">{{ option.text }}</button>
+                            <img @click="doAction(option)" v-if="option.type == 'img'" :src="getUrl(option.img)">
+                          </span>
+                        </template>
+                      </div>                        
                     </div>
-                   
+                  </div> 
+                </div>
+                <div v-else class="message-content">
+                  <div class="message-bubble">
+                    <p >{{ message.text }}</p>
+                    <span  class="message-time">{{ message.time }}</span>
                   </div>
-
-                  <div v-else class="message-content">
-                    <div class="message-bubble">
-                      <p >{{ message.text }}</p>
-                      <span  class="message-time">{{ message.time }}</span>
-                    </div>
-                  </div>
-
-
-
+                </div>
               </div>
               <div class="message bot" v-if="isTyping && index == (messages.length-1)">
                 <div  class="message-content">
@@ -184,9 +180,8 @@ export default {
         let newMessage = null;
 
         if (option.action.type == 'text') {
-          newMessage = {
-            text: option.action.text,
-          };
+          const text = option.action.text ?? null;
+          if (text) newMessage = { text: text };
 
         } else if (option.action.type == 'answer') {
           newMessage = {
@@ -200,20 +195,21 @@ export default {
           }
 
         } else if (option.action.type == 'url') {
-
-
+          const url =  option.action.url ?? null; 
+          if (url) window.open(url, '_blank').focus();
         }
 
         if (newMessage) {
           this.isTyping = true;
-          this.$nextTick(() => {
-            this.scrollToBottom(false);
-          });
+
           setTimeout(() => {
             this.isTyping = false;
             newMessage.sender = "bot";
             newMessage.time = this.getCurrentTime();
             this.messages.push(newMessage);
+            this.$nextTick(() => {
+              this.startSmoothScroll();
+            });
             } , Math.floor(Math.random()*1500))
         }
 
@@ -267,7 +263,6 @@ export default {
       this.currentMessage = "";
       this.$nextTick(() => {
         this.startSmoothScroll();
-        //          this.scrollToBottom(false)
       });
       
       this.handleUserResponse(e.toLowerCase());
@@ -310,10 +305,10 @@ export default {
           options: this.answers[result].options ?? null,
         };     
         
-        let texts = this.answers[result].text;
+        let texts = this.answers[result].text ?? null;
         if (Array.isArray(texts)) {
           newMessage.text = texts[Math.floor(Math.random()* texts.length)];
-        } else {
+        } else if (texts) {
           newMessage.text = texts;
         }
 
@@ -321,7 +316,6 @@ export default {
         this.playMessageSound();
         this.$nextTick(() => {
           this.startSmoothScroll();
-//          this.scrollToBottom(false)
         });
         } , Math.floor(Math.random()*1500))
 
@@ -520,9 +514,15 @@ export default {
 }
 .message-content {
   display: flex;
-  align-items: flex-start;
   max-width: 100%;
 }
+
+.message-answers {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .bot {
   align-items: flex-start;
 }
@@ -553,14 +553,15 @@ export default {
   border-radius: 50%;
 }
 .message-bubble {
-  padding: 12px 16px;
-  border-radius: 18px;
+  padding: 8px 8px;
+  border-radius: 12px;
   box-shadow: 0 2px 6px #00000014;
   position: relative;
   min-width: 40px;
   display: inline-block;
   border: 1px solid #d0d7e0;
   color: #222;
+  margin-bottom: 4px;
 }
 
 .bot .message-bubble {
@@ -665,38 +666,25 @@ export default {
   background-color: #0253a4;
   transform: scale(1.05);
 }
-.action-bubble {
-  margin-left: 48px;
-  margin-top: 4px;
-  padding: 8px 8px;
-  border-radius: 18px;
-  box-shadow: 0 2px 6px #00000014;
-  position: relative;
-  min-width: 40px;
-  display: inline-block;
-  background-color: #e8f0fe;
-  color: #222;
-  border: 1px solid #d0d7e0;  
-}
 
-.action-bubble button {
+.message-bubble button {
   background-color: #d8d8d9;
   border: none;
   margin: 2px;
-  padding: 8px 14px;
-  border-radius: 16px;
+  padding: 8px 8px;
+  border-radius: 10px;
   font-size: 13px;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: #03346e;
+  color: #01234c;
   font-weight: 500;
 }
-.action-bubble button:hover {
+.message-bubble button:hover {
   background-color: #e1e4e8;
   transform: translateY(-2px);
 }
 
-.action-bubble img {
+.message-bubble img {
   max-width: 100%;
 }
 
