@@ -154,7 +154,50 @@ export default {
                           ]            
 
               },          
-          }
+          },
+        },
+        theme : {
+            icon_label_color : "#fff",
+            icon_label_background : "#0084ff",
+            icon_label_shadow : "#0003",
+            icon_border: "#8d8d8d",
+            icon_border_hover: "#0069d9",
+            icon_shadow: "#00000040",
+            chatbot_background: "#fff",
+            chatbot_shadow: "#00000040",
+
+            header_title: "#fff",
+            header_gradient_start: "#008cff",
+            header_gradient_end: "#000b19",
+            action_button: "#fff",
+            action_button_background_hover: "#fff3",
+
+            messages_background: "#ffffec",
+            bot_message_background:  "#e8f0fe",
+            user_message_background: "#cbffe9",
+
+            bot_message: "#222",
+            user_message: "#222",
+            message_shadow: "#00000014",
+            message_border: "#d0d7e0",
+            message_time: "#666",      
+            typing_backround: "#888",
+
+            option: "#01234c",
+            option_background: "#d8d8d9",
+            option_background_hover: "#e1e4e8",
+
+            footer_backround: "#fff",
+            footer_border: "#e9ecef",
+
+            input: "#333",
+            input_hint: "#888",
+            input_backround: "#f1f3f4",
+
+            send: "#fff",
+            send_backround: "#03346e",
+            send_backround_hover: "#0253a4",
+
         }
       };
     },
@@ -162,7 +205,7 @@ export default {
 </script>
 
 <template>
-  <ChatBot v-model="chatBot" :config="config" />
+  <ChatBot v-model="chatBot" :config="config" :theme="theme" />
 </template>
 
 <style scoped>

@@ -93,6 +93,11 @@ export default {
             required: true,
             default: {}
         },
+        theme: {
+            type: Object,
+            required: false,
+            default: {}
+        },        
 
   },
   data() {
@@ -112,6 +117,51 @@ export default {
       smoothScrollInterval: null,
       smoothScrollSpeed: 1,
       smoothScrollDelay: 15,
+
+      theme_icon_label_color : (this.theme && this.theme.icon_label_color) ?? "#fff",
+      theme_icon_label_background : (this.theme && this.theme.icon_label_background) ?? "#0084ff",
+      theme_icon_label_shadow : (this.theme && this.theme.icon_label_shadow) ?? "#0003",
+      theme_icon_border: (this.theme && this.theme.theme_icon_border) ?? "#8d8d8d",
+      theme_icon_border_hover: (this.theme && this.theme.theme_icon_border_hover) ?? "#0069d9",
+      theme_icon_shadow: (this.theme && this.theme.theme_icon_shadow) ??  "#00000040",
+
+      theme_chatbot_background: (this.theme && this.theme.theme_chatbot_background) ?? "#fff",
+      theme_chatbot_shadow: (this.theme && this.theme.theme_chatbot_shadow) ?? "#00000040",
+
+      theme_header_title: (this.theme && this.theme.header_title) ?? "#fff",
+      theme_header_gradient_start: (this.theme && this.theme.header_gradient_start) ?? "#008cff",
+      theme_header_gradient_end: (this.theme && this.theme.header_gradient_end) ?? "#000b19",
+
+      theme_action_button: (this.theme && this.theme.action_button) ?? "#fff",
+      theme_action_button_background_hover: (this.theme && this.theme.action_button_background_hover) ?? "#fff3",
+      
+      theme_messages_background: (this.theme && this.theme.theme_messages_background) ?? "#ffffec",
+
+      theme_message_time: (this.theme && this.theme.theme_message_time) ?? "#666",
+      theme_message_border: (this.theme && this.theme.theme_message_border) ?? "#d0d7e0",
+      theme_message_shadow: (this.theme && this.theme.theme_message_shadow) ?? "#00000014",
+      theme_bot_message_background: (this.theme && this.theme.theme_bot_message_background) ?? "#e8f0fe",
+      theme_user_message_background: (this.theme && this.theme.theme_user_message_background) ?? "#cbffe9",
+      theme_bot_message: (this.theme && this.theme.theme_bot_message) ?? "#222",
+      theme_user_message: (this.theme && this.theme.theme_user_message) ?? "#222",
+
+      theme_option: (this.theme && this.theme.theme_option) ?? "#01234c",
+      theme_option_background: (this.theme && this.theme.theme_option_background) ?? "#d8d8d9",
+      theme_option_background_hover: (this.theme && this.theme.theme_option_background_hover) ?? "#e1e4e8",
+
+      theme_typing_backround: (this.theme && this.theme.theme_typing_backround) ?? "#888",
+
+      theme_footer_backround: (this.theme && this.theme.theme_footer_backround) ?? "#fff",
+      theme_footer_border: (this.theme && this.theme.theme_footer_border) ?? "#e9ecef",
+
+      theme_input: (this.theme && this.theme.theme_input) ?? "#333",
+      theme_input_hint: (this.theme && this.theme.theme_input_hint) ?? "#888",
+      theme_input_backround: (this.theme && this.theme.theme_input_backround) ?? "#f1f3f4",
+
+      theme_send: (this.theme && this.theme.theme_send) ?? "#fff",
+      theme_send_backround: (this.theme && this.theme.theme_send_backround) ?? "#03346e",
+      theme_send_backround_hover: (this.theme && this.theme.theme_send_backround_hover) ?? "#0253a4",
+
     }
   },
   watch: {
@@ -342,6 +392,7 @@ export default {
 
 
 <style scoped>
+
 .chatbot-container {
   font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -369,14 +420,14 @@ export default {
 }
 
 .chatbot-label {
-  background-color: #0084ff;
-  color: #fff;
+  background-color: v-bind(theme_icon_label_background);
+  color: v-bind(theme_icon_label_color);
   padding: 4px 10px;
   border-radius: 12px;
   font-size: 14px;
   font-weight: 700;
   margin-bottom: 5px;
-  box-shadow: 0 3px 6px #0003;
+  box-shadow: 0 3px 6px v-bind(theme_icon_label_shadow);
 }
 .chatbot-icon:hover {
   transform: scale(1.1);
@@ -399,12 +450,12 @@ export default {
   height: 50px;
   object-fit: contain;
   border-radius: 50%;
-  box-shadow: 0 4px 12px #00000040;
-  border: 2px solid #8d8d8d;
+  box-shadow: 0 4px 12px v-bind(theme_icon_shadow);
+  border: 2px solid v-bind(theme_icon_border);
   transition: border-color 0.3s ease;
 }
 .chatbot-icon:hover img {
-  border-color: #0069d9;
+  border-color: v-bind(theme_icon_border_hover);
 }
 
 .chatbot-window {
@@ -414,12 +465,12 @@ export default {
   width: 400px;
   height: 600px;
   max-height: 80vh;
-  background-color: #fff;
+  background-color: v-bind(theme_chatbot_background);
   border-radius: 14px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 10px 30px #00000040;
+  box-shadow: 0 10px 30px v-bind(theme_chatbot_shadow);
   z-index: 999;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
@@ -453,8 +504,8 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 8px 8px;
-  background: linear-gradient(135deg, #008cff, #000b19);
-  color: #fff;
+  background: linear-gradient(135deg, v-bind(theme_header_gradient_start), v-bind(theme_header_gradient_end));
+  color: v-bind(theme_header_title);
   flex-shrink: 0;
 }
 .header-info {
@@ -484,7 +535,7 @@ export default {
 .action-btn {
   background: none;
   border: none;
-  color: #fff;
+  color: v-bind(theme_action_button);
   cursor: pointer;
   font-size: 16px;
   padding: 5px;
@@ -497,7 +548,7 @@ export default {
   transition: background-color 0.2s;
 }
 .action-btn:hover {
-  background-color: #fff3;
+  background-color: v-bind(theme_action_button_background_hover);
 }
 .action-icon {
   font-size: 14px;
@@ -506,7 +557,7 @@ export default {
   flex: 1;
   overflow-y: auto;
   padding: 16px;
-  background-color: #ffffec;
+  background-color: v-bind(theme_messages_background);
 }
 .message {
   margin-bottom: 16px;
@@ -556,22 +607,23 @@ export default {
 .message-bubble {
   padding: 8px 8px;
   border-radius: 12px;
-  box-shadow: 0 2px 6px #00000014;
+  box-shadow: 0 2px 6px v-bind(theme_message_shadow);
   position: relative;
   min-width: 40px;
   display: inline-block;
-  border: 1px solid #d0d7e0;
-  color: #222;
+  border: 1px solid v-bind(theme_message_border);
   margin-bottom: 4px;
 }
 
 .bot .message-bubble {
-  background-color: #e8f0fe;
+  color: v-bind(theme_bot_message);
+  background-color: v-bind(theme_bot_message_background);
   border-top-left-radius: 0;
 }
 
 .user .message-bubble {
-  background-color: #cbffe9;
+  color: v-bind(theme_user_message);
+  background-color: v-bind(theme_user_message_background);
   border-top-right-radius: 0;
 }
 .message-bubble p {
@@ -586,7 +638,7 @@ export default {
   margin-top: 4px;
   display: block;
   text-align: right;
-  color: #666;
+  color: v-bind(theme_message_time);
 }
 
 .typing-indicator {
@@ -599,7 +651,7 @@ export default {
   height: 8px;
   width: 8px;
   margin: 0 2px;
-  background-color: #888;
+  background-color: v-bind(theme_typing_backround);
   border-radius: 50%;
   display: inline-block;
   opacity: 0.6;
@@ -632,8 +684,8 @@ export default {
   display: flex;
   align-items: center;
   padding: 10px 10px;
-  border-top: 1px solid #e9ecef;
-  background-color: #fff;
+  border-top: 1px solid v-bind(theme_footer_backround);
+  background-color: v-bind(theme_footer_backround);
 }
 .chatbot-input input {
   flex: 1;
@@ -641,16 +693,16 @@ export default {
   outline: none;
   padding: 12px 16px;
   border-radius: 12px;
-  background-color: #f1f3f4;
+  background-color: v-bind(theme_input_backround);
   font-size: 14px;
-  color: #333;
+  color: v-bind(theme_input);
 }
 .chatbot-input input::placeholder {
-  color: #888;
+  color: v-bind(theme_input_hint);
 }
 .send-btn {
-  background-color: #03346e;
-  color: #fff;
+  background-color: v-bind(theme_send_backround);
+  color: v-bind(theme_send);
   border: none;
   border-radius: 50%;
   width: 40px;
@@ -664,12 +716,12 @@ export default {
   font-size: 16px;
 }
 .send-btn:hover {
-  background-color: #0253a4;
+  background-color: v-bind(theme_send_backround_hover);
   transform: scale(1.05);
 }
 
 .message-bubble button {
-  background-color: #d8d8d9;
+  background-color: v-bind(theme_option_background);
   border: none;
   margin: 2px;
   padding: 8px 8px;
@@ -677,11 +729,11 @@ export default {
   font-size: 13px;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: #01234c;
+  color: v-bind(theme_option);
   font-weight: 500;
 }
 .message-bubble button:hover {
-  background-color: #e1e4e8;
+  background-color: v-bind(theme_option_background_hover);
   transform: translateY(-2px);
 }
 
