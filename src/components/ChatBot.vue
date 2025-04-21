@@ -121,12 +121,12 @@ export default {
       theme_icon_label_color : (this.theme && this.theme.icon_label_color) ?? "#fff",
       theme_icon_label_background : (this.theme && this.theme.icon_label_background) ?? "#0084ff",
       theme_icon_label_shadow : (this.theme && this.theme.icon_label_shadow) ?? "#0003",
-      theme_icon_border: (this.theme && this.theme.theme_icon_border) ?? "#8d8d8d",
-      theme_icon_border_hover: (this.theme && this.theme.theme_icon_border_hover) ?? "#0069d9",
-      theme_icon_shadow: (this.theme && this.theme.theme_icon_shadow) ??  "#00000040",
+      theme_icon_border: (this.theme && this.theme.icon_border) ?? "#8d8d8d",
+      theme_icon_border_hover: (this.theme && this.theme.icon_border_hover) ?? "#0069d9",
+      theme_icon_shadow: (this.theme && this.theme.icon_shadow) ??  "#00000040",
 
-      theme_chatbot_background: (this.theme && this.theme.theme_chatbot_background) ?? "#fff",
-      theme_chatbot_shadow: (this.theme && this.theme.theme_chatbot_shadow) ?? "#00000040",
+      theme_chatbot_background: (this.theme && this.theme.chatbot_background) ?? "#fff",
+      theme_chatbot_shadow: (this.theme && this.theme.chatbot_shadow) ?? "#00000040",
 
       theme_header_title: (this.theme && this.theme.header_title) ?? "#fff",
       theme_header_gradient_start: (this.theme && this.theme.header_gradient_start) ?? "#008cff",
@@ -135,32 +135,32 @@ export default {
       theme_action_button: (this.theme && this.theme.action_button) ?? "#fff",
       theme_action_button_background_hover: (this.theme && this.theme.action_button_background_hover) ?? "#fff3",
       
-      theme_messages_background: (this.theme && this.theme.theme_messages_background) ?? "#ffffec",
+      theme_messages_background: (this.theme && this.theme.messages_background) ?? "#ffffec",
 
-      theme_message_time: (this.theme && this.theme.theme_message_time) ?? "#666",
-      theme_message_border: (this.theme && this.theme.theme_message_border) ?? "#d0d7e0",
-      theme_message_shadow: (this.theme && this.theme.theme_message_shadow) ?? "#00000014",
-      theme_bot_message_background: (this.theme && this.theme.theme_bot_message_background) ?? "#e8f0fe",
-      theme_user_message_background: (this.theme && this.theme.theme_user_message_background) ?? "#cbffe9",
-      theme_bot_message: (this.theme && this.theme.theme_bot_message) ?? "#222",
-      theme_user_message: (this.theme && this.theme.theme_user_message) ?? "#222",
+      theme_message_time: (this.theme && this.theme.message_time) ?? "#666",
+      theme_message_border: (this.theme && this.theme.message_border) ?? "#d0d7e0",
+      theme_message_shadow: (this.theme && this.theme.message_shadow) ?? "#00000014",
+      theme_bot_message_background: (this.theme && this.theme.bot_message_background) ?? "#e8f0fe",
+      theme_user_message_background: (this.theme && this.theme.user_message_background) ?? "#cbffe9",
+      theme_bot_message: (this.theme && this.theme.bot_message) ?? "#222",
+      theme_user_message: (this.theme && this.theme.user_message) ?? "#222",
 
-      theme_option: (this.theme && this.theme.theme_option) ?? "#01234c",
-      theme_option_background: (this.theme && this.theme.theme_option_background) ?? "#d8d8d9",
-      theme_option_background_hover: (this.theme && this.theme.theme_option_background_hover) ?? "#e1e4e8",
+      theme_option: (this.theme && this.theme.option) ?? "#01234c",
+      theme_option_background: (this.theme && this.theme.option_background) ?? "#d8d8d9",
+      theme_option_background_hover: (this.theme && this.theme.option_background_hover) ?? "#e1e4e8",
 
-      theme_typing_backround: (this.theme && this.theme.theme_typing_backround) ?? "#888",
+      theme_typing_backround: (this.theme && this.theme.typing_backround) ?? "#888",
 
-      theme_footer_backround: (this.theme && this.theme.theme_footer_backround) ?? "#fff",
-      theme_footer_border: (this.theme && this.theme.theme_footer_border) ?? "#e9ecef",
+      theme_footer_backround: (this.theme && this.theme.footer_backround) ?? "#fff",
+      theme_footer_border: (this.theme && this.theme.footer_border) ?? "#e9ecef",
 
-      theme_input: (this.theme && this.theme.theme_input) ?? "#333",
-      theme_input_hint: (this.theme && this.theme.theme_input_hint) ?? "#888",
-      theme_input_backround: (this.theme && this.theme.theme_input_backround) ?? "#f1f3f4",
+      theme_input: (this.theme && this.theme.input) ?? "#333",
+      theme_input_hint: (this.theme && this.theme.input_hint) ?? "#888",
+      theme_input_backround: (this.theme && this.theme.input_backround) ?? "#f1f3f4",
 
-      theme_send: (this.theme && this.theme.theme_send) ?? "#fff",
-      theme_send_backround: (this.theme && this.theme.theme_send_backround) ?? "#03346e",
-      theme_send_backround_hover: (this.theme && this.theme.theme_send_backround_hover) ?? "#0253a4",
+      theme_send: (this.theme && this.theme.send) ?? "#fff",
+      theme_send_backround: (this.theme && this.theme.send_backround) ?? "#03346e",
+      theme_send_backround_hover: (this.theme && this.theme.send_backround_hover) ?? "#0253a4",
 
     }
   },
@@ -523,6 +523,7 @@ export default {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
+  color: v-bind(theme_header_title); 
 }
 .status-online {
   font-size: 12px;
